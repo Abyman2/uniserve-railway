@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/uniconnect_db
+    username: postgres
+    password: 24681357
+  security:
+    user:
+      name: admin
+      password: admin123
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+server:
+  port: 8080
+
+spring-doc:
+    swagger-ui:
+      path: /swagger-ui.html
+jwt:
+  secret: yourVeryLongSecretKeyThatIsAtLeast32CharactersLong123456
+
+

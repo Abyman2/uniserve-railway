@@ -1,0 +1,43 @@
+$kind: http-request
+name: Apply as Provider
+method: POST
+url: 'http://localhost:8080/api/provider-applications'
+headers:
+  - key: Content-Type
+    value: application/json
+  - key: Authorization
+    value: 'Bearer {{token}}'
+body:
+  type: json
+  content: |-
+    {
+      "skills": "Java, Spring Boot, UI Design",
+      "portfolioLinks": "https://github.com/abyman2"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 201", function () {
+          pm.response.to.have.status(201);
+      });
+
+      pm.test("Response has application id", function () {
+          var jsonData = pm.response.json();
+          pm.expect(jsonData).to.have.property('id');
+      });
+
+      pm.test("Status is PENDING", function () {
+          var jsonData = pm.response.json();
+          pm.expect(jsonData.status).to.eql('PENDING');
+      });
+
+      pm.test("Skills match", function () {
+          var jsonData = pm.response.json();
+          pm.expect(jsonData.skills).to.eql('Java, Spring Boot, UI Design');
+      });
+
+      pm.test("Portfolio links match", function () {
+          var jsonData = pm.response.json();
+          pm.expect(jsonData.portfolioLinks).to.eql('https://github.com/abyman2');
+      });

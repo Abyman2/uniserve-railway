@@ -1,0 +1,2 @@
+ALTER TABLE news_articles
+ADD COLUMN category VARCHAR(100) NOT NULL DEFAULT 'General';

@@ -1,0 +1,72 @@
+$kind: http-request
+name: Register
+method: POST
+url: 'http://localhost:8080/api/auth/register'
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "fullName": "Test User",
+      "email": "{{testEmail}}",
+      "password": "Test@1234"
+    }
+scripts:
+  - type: beforeRequest
+    language: text/javascript
+    code: |-
+      var testEmail = "testuser_" + Date.now() + "@gmail.com";
+      pm.variables.set("testEmail", testEmail);
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 201", function () {
+          pm.response.to.have.status(201);
+      });
+
+      pm.test("Response has message", function () {
+          var jsonData = pm.response.json();
+          pm.expect(jsonData).to.have.property('message');
+      });
+
+      pm.test("Message is 'User registered successfully'", function () {
+          var jsonData = pm.response.json();
+          pm.expect(jsonData.message).to.eql('User registered successfully');
+      });
+
+      pm.test("Response time is less than 2000ms", function () {
+          pm.expect(pm.response.responseTime).to.be.below(2000);
+      });
+
+      pm.test("Duplicate email returns error", function (done) {
+          var usedEmail = pm.variables.get("testEmail");
+          pm.sendRequest({
+              url: 'http://localhost:8080/api/auth/register',
+              method: 'POST',
+              header: { 'Content-Type': 'application/json' },
+              body: {
+                  mode: 'raw',
+                  raw: JSON.stringify({ fullName: 'Test User', email: usedEmail, password: 'Test@1234' })
+              }
+          }, function (err, res) {
+              pm.expect(res.code).to.be.within(400, 599);
+              done();
+          });
+      });
+
+      pm.test("Missing fields return 400", function (done) {
+          pm.sendRequest({
+              url: 'http://localhost:8080/api/auth/register',
+              method: 'POST',
+              header: { 'Content-Type': 'application/json' },
+              body: {
+                  mode: 'raw',
+                  raw: JSON.stringify({})
+              }
+          }, function (err, res) {
+              pm.expect(res.code).to.eql(400);
+              done();
+          });
+      });

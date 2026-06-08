@@ -1,0 +1,5 @@
+name: New Environment
+values:
+  - key: token
+    value: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhYmVsQGdtYWlsLmNvbSIsImlhdCI6MTc3OTgxNDA1MCwiZXhwIjoxNzc5OTAwNDUwfQ.PGsPq0EKlgaQOQNtowATKVKYtmrmV2_hCse0h6ckZAY'
+    enabled: true

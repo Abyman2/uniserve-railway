@@ -1,0 +1,57 @@
+$kind: http-request
+name: Login
+method: POST
+url: 'http://localhost:8080/api/auth/login'
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "email": "abel@gmail.com",
+      "password": "123456"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test("Response has token", function () {
+          var jsonData = pm.response.json();
+          pm.expect(jsonData.token).to.be.a('string').and.not.empty;
+      });
+
+      pm.test("Response has message", function () {
+          var jsonData = pm.response.json();
+          pm.expect(jsonData).to.have.property('message');
+      });
+
+      pm.test("Response time is less than 2000ms", function () {
+          pm.expect(pm.response.responseTime).to.be.below(2000);
+      });
+
+      pm.test("Invalid credentials return 4xx", function (done) {
+          pm.sendRequest({
+              url: 'http://localhost:8080/api/auth/login',
+              method: 'POST',
+              header: { 'Content-Type': 'application/json' },
+              body: {
+                  mode: 'raw',
+                  raw: JSON.stringify({ email: 'abel@gmail.com', password: 'wrongpassword' })
+              }
+          }, function (err, res) {
+              pm.expect(res.code).to.be.within(400, 499);
+              done();
+          });
+      });
+
+      // Save JWT token to environment
+      var jsonData = pm.response.json();
+      if (jsonData.token) {
+          pm.environment.set('token', jsonData.token);
+          console.log('JWT token saved to environment.');
+      }
