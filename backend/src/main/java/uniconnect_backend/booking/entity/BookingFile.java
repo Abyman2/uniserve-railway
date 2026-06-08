@@ -30,7 +30,6 @@ public class BookingFile {
     @Column(name = "file_type", nullable = false)
     private String fileType;
 
-    @Lob
     @Column(nullable = false)
     private byte[] data;
 
@@ -41,3 +40,4 @@ public class BookingFile {
     @JoinColumn(name = "uploaded_by_id", nullable = false)
     private User uploadedBy;
 }
+
