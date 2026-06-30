@@ -98,11 +98,11 @@ http://localhost:8080/swagger-ui.html
 
 ## GitHub Repository
 
-(Add your public repository URL before submission)
+(https://github.com/Abyman2/uniserve-railway)
 
 ## Deployed URL
 
-(Add your deployed application URL before submission)
+(https://uniserve-frontend-production.up.railway.app)
 
 ## AI Usage Disclosure
 
