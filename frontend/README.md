@@ -15,15 +15,17 @@ The React Compiler is not enabled on this template because of its impact on dev 
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
 
-##How to run locally yourself
-#Terminal 1 — Backend (from uniserve_project/backend):
+## How to run locally yourself
+
+# Terminal 1 — Backend (from uniserve_project/backend):
 
 $env:DB_URL='jdbc:postgresql://localhost:5432/uniconnect_db'
 $env:DB_USER='postgres'
 $env:DB_PASS='24681357'
 $env:JWT_SECRET='yourVeryLongSecretKeyThatIsAtLeast32CharactersLong123456'
 .\mvnw.cmd spring-boot:run
-#Terminal 2 — Frontend (from uniserve_project/frontend):
+
+# Terminal 2 — Frontend (from uniserve_project/frontend):
 
 npm install
 npm run dev
